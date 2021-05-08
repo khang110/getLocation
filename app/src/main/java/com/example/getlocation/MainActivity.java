@@ -33,6 +33,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
 //    inittialize variable
 
     Button btLocation;
-    TextView textView1, textView2, textView3, textView4, textView5;
+    TextView textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8, textView9;
+    TextInputEditText tvCity, tvQuanHuyen, tvPhuongXa, tvDiaChiCuThe;
+    Button buttonLayViTri;
     FusedLocationProviderClient fusedLocationProviderClient;
 
 
@@ -54,19 +57,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btLocation = findViewById(R.id.bt_location);
-        textView1 = findViewById(R.id.text_view1);
-        textView2 = findViewById(R.id.text_view2);
-        textView3 = findViewById(R.id.text_view3);
-        textView4 = findViewById(R.id.text_view4);
-        textView5 = findViewById(R.id.text_view5);
+//        btLocation = findViewById(R.id.bt_location);
+//        textView3 = findViewById(R.id.text_view3);
+//        textView4 = findViewById(R.id.text_view4);
+//        textView5 = findViewById(R.id.text_view5);
+//        textView6 = findViewById(R.id.text_view6);
+//        textView7 = findViewById(R.id.text_view7);
+//        textView8 = findViewById(R.id.text_view8);
+//        textView9 = findViewById(R.id.text_view9);
+
+        buttonLayViTri = findViewById(R.id.button_layvitri);
+        tvCity = findViewById(R.id.textview_city);
+        tvQuanHuyen = findViewById(R.id.textview_quanhuyen);
+        tvPhuongXa = findViewById(R.id.textview_phuongxa);
+        tvDiaChiCuThe = findViewById(R.id.textview_vitricuthe);
+
 
 
 //        initialize fusedLocationProviderClient
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        btLocation.setOnClickListener(new View.OnClickListener() {
+        buttonLayViTri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                check permission
@@ -99,33 +111,52 @@ public class MainActivity extends AppCompatActivity {
                         List<Address> addresses = geocoder.getFromLocation(
                                 location.getLatitude(), location.getLongitude(), 1
                         );
+//                        List<Address> addresses2 = geocoder.getFromLocation(
+//                                10.870134158981253, 106.80380339520607, 1
+//                        );
+//
+//
+////                        set countryname
+//                        textView3.setText(Html.fromHtml(
+//                                "<font color='#6200EE'><b>Country Name :</b><br></font>"
+//                                        + addresses.get(0).getCountryName()
+//                        ));
+////                        Set locality
+//                        textView4.setText(Html.fromHtml(
+//                                "<font color='#6200EE'><b>Thành phố :</b><br></font>"
+//                                        + addresses.get(0).getAdminArea()
+//                        ));
+////                        set address
+//                        textView5.setText(Html.fromHtml(
+//                                "<font color='#6200EE'><b>Địa chỉ :</b><br></font>"
+//                                        + addresses.get(0).getAddressLine(0)
+//                        ));
+//                        textView6.setText(Html.fromHtml(
+//                                "<font color='#6200EE'><b>Tỉnh/thành phố :</b><br></font>"
+//                                        + addresses.get(0).getAdminArea()
+//                        ));
+//                        textView7.setText(Html.fromHtml(
+//                                "<font color='#6200EE'><b>Quận/huyện :</b><br></font>"
+//                                        + addresses.get(0).getSubAdminArea()
+//                        ));
+//
+//                        textView8.setText(Html.fromHtml(
+//                                "<font color='#6200EE'><b>Số nhà :</b><br></font>"
+//                                        + addresses.get(0).getFeatureName()
+//                        ));
 
-//                        set latitude on textview
-                        textView1.setText(Html.fromHtml(
-                                "<font color='#6200EE'><b>Latitude :</b><br></font>"
-                                + addresses.get(0).getLatitude()
-                        ));
-//                        set longtitude
-                        textView2.setText(Html.fromHtml(
-                                "<font color='#6200EE'><b>Longtitude :</b><br></font>"
-                                        + addresses.get(0).getLongitude()
-                        ));
+                        String vitri = addresses.get(0).getAddressLine(0);
+                        String quocgia = "", thanhpho = "", tendiachi = "", quan = "";
+                        quocgia = addresses.get(0).getCountryName();
+                        thanhpho = addresses.get(0).getAdminArea();
+                        quan = addresses.get(0).getSubAdminArea();
+                        tendiachi = addresses.get(0).getFeatureName();
+                        String[] diachi = vitri.split(",");
+                        tvCity.setText(diachi[diachi.length-2]);
+                        tvQuanHuyen.setText(diachi[diachi.length-3]);
+                        tvPhuongXa.setText(diachi[diachi.length-4]);
+                        tvDiaChiCuThe.setText(tendiachi);
 
-//                        set countryname
-                        textView3.setText(Html.fromHtml(
-                                "<font color='#6200EE'><b>Country Name :</b><br></font>"
-                                        + addresses.get(0).getCountryName()
-                        ));
-//                        Set locality
-                        textView4.setText(Html.fromHtml(
-                                "<font color='#6200EE'><b>Latitude :</b><br></font>"
-                                        + addresses.get(0).getLocality()
-                        ));
-//                        set address
-                        textView5.setText(Html.fromHtml(
-                                "<font color='#6200EE'><b>Latitude :</b><br></font>"
-                                        + addresses.get(0).getAddressLine(0)
-                        ));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
